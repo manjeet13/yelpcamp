@@ -213,6 +213,6 @@ function isLoggedIn(req, res, next){
 
 
 //initialize server on PORT
-app.listen(process.env.PORT, process.env.IP, function(){
+app.listen(3000, function(){
     console.log("YelpCamp app is now running");
 });
