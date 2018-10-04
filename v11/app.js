@@ -1,13 +1,24 @@
+/**
+* @author : Manjeet Kumar
+* @email : kumar.manjeet13@gmail.com
+* @description : main app driver file. Handles pretty much everything that goes on in the application from routing to db transactions.
+*/
+
+
 var express         = require("express"),
     app             = express(),
-    config          = require("./configs/config"),
-    bodyParser      = require("body-parser"),
+    config          = require("./configs/config");
+    
+//import third party plugins (npm packages)
+var bodyParser      = require("body-parser"),
     mongoose        = require("mongoose"),
     passport        = require("passport"),
     LocalStrategy   = require("passport-local"),
     flash           = require("connect-flash"),
-    methodOverride  = require("method-override"),
-    Campground      = require("./models/campground"),
+    methodOverride  = require("method-override");
+
+//import db models
+var Campground      = require("./models/campground"),
     Comment         = require("./models/comment"),
     User            = require("./models/user"),
     seedDB          = require("./seeds");
@@ -19,8 +30,11 @@ var commentRoutes       = require("./routes/comments"),
     indexRoutes          = require("./routes/index");           //auth routes
 
 
+//connect to the database
 mongoose.connect(config.dbURL);		//environment variable use to hide the actual link to the db
 
+
+//set app configurations
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
@@ -34,6 +48,8 @@ app.use(require("express-session")({
     saveUninitialized: false
 }));
 
+
+//configure passport
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
