@@ -1,10 +1,20 @@
+/**
+* @author : Manjeet Kumar
+* @description : this file contains a few middleware function to handle authorization(ACL) and 
+* authentication to certain resources (routes).
+*/
+
+
 var Campground  = require("../models/campground");
 var Comment     = require("../models/comment");
 
-// all the middleware goes here
 
+// all the middleware goes here
 var middlewareObj = {};
 
+/**
+* @description : this function applies authorization to certain routes. Checks if a particular user has the right to access a particular route.
+*/
 middlewareObj.checkCampgroundOwnership = function(req, res, next){
     if(req.isAuthenticated()){
         Campground.findById(req.params.id, function(err, camp){
@@ -27,6 +37,10 @@ middlewareObj.checkCampgroundOwnership = function(req, res, next){
     }
 };
 
+
+/**
+* @description : this function applies authorization to certain routes. Ensures that a user can edit and delete comments that he added only.
+*/
 middlewareObj.checkCommentOwnership = function(req, res, next){
     if(req.isAuthenticated()){
         Comment.findById(req.params.comment_id, function(err, foundComment){
@@ -49,6 +63,10 @@ middlewareObj.checkCommentOwnership = function(req, res, next){
     }
 };
 
+
+/**
+* @description : this function applies authentication to the application. Checks if the user is logged in or not.
+*/
 middlewareObj.isLoggedIn = function(req, res, next){
     if(req.isAuthenticated()){
         return next();

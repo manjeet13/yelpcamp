@@ -1,5 +1,6 @@
 var express         = require("express"),
     app             = express(),
+    config          = require("./configs/config"),
     bodyParser      = require("body-parser"),
     mongoose        = require("mongoose"),
     passport        = require("passport"),
@@ -18,7 +19,7 @@ var commentRoutes       = require("./routes/comments"),
     indexRoutes          = require("./routes/index");           //auth routes
 
 
-mongoose.connect(process.env.DATABASEURL);		//environment variable use to hide the actual link to the db
+mongoose.connect(config.dbURL);		//environment variable use to hide the actual link to the db
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
