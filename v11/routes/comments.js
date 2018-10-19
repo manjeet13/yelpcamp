@@ -1,3 +1,9 @@
+/**
+* @author: Manjeet Kumar
+* @description : this is the comment route file which handles CRUD operations regarding comments.
+*/
+
+
 var express     = require("express");
 var router      = express.Router({mergeParams: true});
 var Campground  = require("../models/campground");
@@ -9,7 +15,9 @@ var middleware  = require("../middleware");
 // =================================
 
 
-//comments new
+/**
+* @description : get route which opens a new comment page for adding a comment to a campgroud
+*/
 router.get("/new", middleware.isLoggedIn, function(req, res) {
     //find campground by id
     Campground.findById(req.params.id, function(err,campground){
@@ -23,7 +31,9 @@ router.get("/new", middleware.isLoggedIn, function(req, res) {
 });
 
 
-//comments create
+/**
+* @description : post route which adds a new comment to a campgroud and also saves it into db
+*/
 router.post("/", middleware.isLoggedIn, function(req,res){
     //lookup campground using ID
     //create new comment
@@ -56,7 +66,9 @@ router.post("/", middleware.isLoggedIn, function(req,res){
 });
 
 
-//EDIT route
+/**
+* @description : route which opens the page where a comment can be edited. Only the author of the comment has the edit access.
+*/
 router.get("/:comment_id/edit", middleware.checkCommentOwnership, function(req,res){
     Comment.findById(req.params.comment_id, function(err, foundComment) {
         if(err){
@@ -68,7 +80,11 @@ router.get("/:comment_id/edit", middleware.checkCommentOwnership, function(req,r
     
 });
 
+
 //UPDATE comment
+/**
+* @description : route which updates the comment on page after it has been edited and submitted.
+*/
 router.put("/:comment_id", middleware.checkCommentOwnership, function(req, res) {
     //find and update
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
@@ -80,7 +96,11 @@ router.put("/:comment_id", middleware.checkCommentOwnership, function(req, res) 
     });
 });
 
+
 //DESTROY comment
+/**
+* @description : route which handles the deletion of a comment. Only the author of the comment has the delete access.
+*/
 router.delete("/:comment_id", middleware.checkCommentOwnership, function(req, res){
     Comment.findByIdAndDelete(req.params.comment_id, function(err){
         if(err){
